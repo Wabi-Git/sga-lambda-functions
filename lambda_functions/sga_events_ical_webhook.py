@@ -22,7 +22,8 @@ class Event:
     name: str
     description: str
     location: str
-    date: str
+    startdate: str
+    enddate: str
 
 
 def lambda_handler(event, context) -> dict:
@@ -74,10 +75,12 @@ def _build_ical_file(events: T.List[Event]) -> T.Generator[str, None, None]:
     # Iterate over each event and add it to the calendar
     for event in events:
         ics_event = ICSEvent()
+        ics_event.all_day = True
         ics_event.name = event.name
         ics_event.description = event.description
         ics_event.location = event.location
-        ics_event.begin = event.date
+        ics_event.begin = event.startdate
+        ics_event.end = event.enddate
         
         calendar.events.add(ics_event)
 
