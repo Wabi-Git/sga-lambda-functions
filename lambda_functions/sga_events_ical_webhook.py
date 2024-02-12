@@ -75,12 +75,10 @@ def _build_ical_file(events: T.List[Event]) -> T.Generator[str, None, None]:
         ics_event.begin = event.date
         
         calendar.events.add(ics_event)
-    
-    # convert the Calendar object to string and save it to a file
-    ical_file = str(calendar)
 
     with tempfile.NamedTemporaryFile('w') as fp:
-        fp.writelines(ical_file)
+        fp.write(calendar.serialize())
+        fp.flush()
         yield fp.name
 
 
