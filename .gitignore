@@ -1,0 +1,43 @@
+# flask app
+venv/
+*.pyc
+__pycache__/
+__temp__/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+logs/
+instance/*.profile
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.envrc
+.envrc.*
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# projects metadata
+.idea
+
+# ide
+.vscode/
+
+# generated data
+data/
+output/
+lambda.zip
+*.ps1
