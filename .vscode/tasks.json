@@ -1,0 +1,38 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Lambda",
+            "type": "shell",
+            "command": ". bin/package_lambda.ps1",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe",
+                    "args": [
+                        "-NoExit",
+                        "-Command"
+                    ]
+                },
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+    ],
+    "inputs": [
+        {
+            "id": "docker_compose_file",
+            "type": "promptString",
+            "default": "docker-compose.yml",
+            "description": "Docker Compose File"
+        }
+    ]
+}

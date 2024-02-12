@@ -33,11 +33,7 @@ yarn-error.log*
 # projects metadata
 .idea
 
-# ide
-.vscode/
-
 # generated data
 data/
 output/
 lambda.zip
-*.ps1
