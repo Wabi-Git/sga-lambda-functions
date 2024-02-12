@@ -80,7 +80,7 @@ def _build_ical_file(events: T.List[Event]) -> T.Generator[str, None, None]:
         ics_event.location = event.location
         ics_event.begin = event.startdate
         ics_event.end = event.enddate
-        
+        ics_event.make_all_day()
         calendar.events.add(ics_event)
 
     with tempfile.NamedTemporaryFile('w') as fp:
@@ -91,7 +91,7 @@ def _build_ical_file(events: T.List[Event]) -> T.Generator[str, None, None]:
 
 def _upload_and_get_file_url(file, expiry: int = 86400):
     # 1. upload the file
-    object_key = f"{str(uuid.uuid4())}.ical"
+    object_key = f"{str(uuid.uuid4())}.ics"
     s3_client.upload_file(file, BUCKET_NAME, object_key)
 
     # 2. Generate the presigned URL for the S3 object

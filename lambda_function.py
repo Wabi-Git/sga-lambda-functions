@@ -33,7 +33,7 @@ def lambda_handler(event, context):
                 'Content-Type': "application/json",
             },
             'body': json.dumps({
-                "message": str(e)
+                "error": str(e)
             })
         }
 
@@ -45,6 +45,6 @@ def lambda_handler(event, context):
                 'Content-Type': "application/json",
             },
             'body': json.dumps({
-                "message": "Sorry, there was an error whilst processing your request, please try again"
+                "error": "Sorry, there was an error whilst processing your request, please try again"
             })
         }
