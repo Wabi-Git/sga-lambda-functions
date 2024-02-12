@@ -75,7 +75,6 @@ def _build_ical_file(events: T.List[Event]) -> T.Generator[str, None, None]:
     # Iterate over each event and add it to the calendar
     for event in events:
         ics_event = ICSEvent()
-        ics_event.all_day = True
         ics_event.name = event.name
         ics_event.description = event.description
         ics_event.location = event.location
