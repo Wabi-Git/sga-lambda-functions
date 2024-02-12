@@ -62,7 +62,7 @@ def lambda_handler(event, context):
 
 
 @contextmanager
-def _build_ical_file(events: T.List[Event]):
+def _build_ical_file(events: T.List[Event]) -> T.Generator[str, None, None]:
     # Instantiate a calendar
     calendar = Calendar()
     
@@ -81,7 +81,7 @@ def _build_ical_file(events: T.List[Event]):
 
     with tempfile.NamedTemporaryFile('w') as fp:
         fp.writelines(ical_file)
-        yield fp
+        yield fp.name
 
 
 def _upload_and_get_file_url(file, expiry: int = 86400):
