@@ -25,7 +25,7 @@ class Event:
     date: str
 
 
-def lambda_handler(event, context):
+def lambda_handler(event, context) -> dict:
     """
     Sample payload
     event = {
@@ -39,8 +39,10 @@ def lambda_handler(event, context):
         ]
     }
     """
+    body = json.loads(event.get("body"))
+
     # 1. read the events into our custom data type
-    events = event.get("events", [])
+    events = body.get("events", [])
     if not events:
         raise ValueError("No events")
     logger.info(events)
@@ -55,6 +57,9 @@ def lambda_handler(event, context):
     # 4. return url in response
     return {
         'statusCode': 200,
+        'headers': {
+            'Content-Type': "application/json",
+        },
         'body': json.dumps({
             "url": presigned_url
         })
