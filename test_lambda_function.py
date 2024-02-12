@@ -1,7 +1,9 @@
-from lambda_function import lambda_handler
-
-
 if __name__ == "__main__":
+    from dotenv import load_dotenv
+    from lambda_function import lambda_handler
+
+    load_dotenv()
+
     sample_event = {
         "events": [
             {
