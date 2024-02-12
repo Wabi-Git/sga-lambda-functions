@@ -3,7 +3,13 @@ import uuid
 import logging
 import boto3
 import os
-from ics import Calendar, Event
+import tempfile
+import typing as T
+from contextlib import contextmanager
+from ics import (
+    Calendar,
+    Event as ICSEvent
+)
 from dataclasses import dataclass
 
 logger = logging.getLogger()
@@ -37,13 +43,14 @@ def lambda_handler(event, context):
     events = event.get("events", [])
     if not events:
         raise ValueError("No events")
+    logger.info(events)
     events = [Event(**event) for event in events]
     
     # 2. generate the iCal file
-    ical_file = _build_ical_file(event)
-    
-    # 3. upload the iCal, and generate the presigned url
-    presigned_url = _upload_and_get_file_url(ical_file)
+    presigned_url = None
+    with _build_ical_file(events) as ical_file:
+        # 3. upload the iCal, and generate the presigned url
+        presigned_url = _upload_and_get_file_url(ical_file)
     
     # 4. return url in response
     return {
@@ -54,13 +61,14 @@ def lambda_handler(event, context):
     }
 
 
-def _build_ical_file(events):
+@contextmanager
+def _build_ical_file(events: T.List[Event]):
     # Instantiate a calendar
     calendar = Calendar()
     
     # Iterate over each event and add it to the calendar
     for event in events:
-        ics_event = Event()
+        ics_event = ICSEvent()
         ics_event.name = event.name
         ics_event.description = event.description
         ics_event.location = event.location
@@ -70,11 +78,10 @@ def _build_ical_file(events):
     
     # convert the Calendar object to string and save it to a file
     ical_file = str(calendar)
-    file_name = 'my_calendar.ics'
-    with open(file_name, 'w') as my_file:
-        my_file.writelines(ical_file)
-        
-    return file_name
+
+    with tempfile.NamedTemporaryFile('w') as fp:
+        fp.writelines(ical_file)
+        yield fp
 
 
 def _upload_and_get_file_url(file, expiry: int = 86400):
