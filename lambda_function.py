@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     if not FUNCTION_NAME:
         raise ValueError("Please specify the environment variable `FUNCTION_NAME`")
 
-    m = importlib.import_module(name='app.%s' % FUNCTION_NAME)
+    m = importlib.import_module(name='lambda_functions.%s' % FUNCTION_NAME)
     if not hasattr(m, 'lambda_handler'):
         raise Exception(f'function `{FUNCTION_NAME}` has no `lambda_handler` function')
 
